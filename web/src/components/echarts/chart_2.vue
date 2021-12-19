@@ -1,0 +1,88 @@
+<template>
+  <div class="container">
+    <div id="main_2"></div>
+  </div>
+</template>
+<script>
+import * as echarts from "echarts";
+export default {
+  name: "chart_2",
+  data() {
+    return {
+      key: [],
+      value: [],
+    };
+  },
+  props: {
+    income: {
+      type: Object,
+      default() {
+        return {};
+      },
+    },
+  },
+  methods: {
+    Init_map() {
+      console.log(this.key);
+      var chartDom = document.getElementById("main_2");
+      var myChart = echarts.init(chartDom);
+      var option;
+
+      option = {
+        title: {
+          text: "收入比例分布",
+          left: "center",
+        },
+        tooltip: {
+          trigger: "item",
+        },
+        legend: {
+          orient: "vertical",
+          left: "left",
+        },
+        series: [
+          {
+            name: "Access From",
+            type: "pie",
+            radius: "50%",
+            data: [
+              { value: this.value[0], name: this.key[0] },
+              { value: this.value[1], name: this.key[1] },
+            ],
+            emphasis: {
+              itemStyle: {
+                shadowBlur: 10,
+                shadowOffsetX: 0,
+                shadowColor: "rgba(0, 0, 0, 0.5)",
+              },
+            },
+          },
+        ],
+      };
+      option && myChart.setOption(option, true);
+    },
+  },
+  created() {},
+  mounted() {
+    this.Init_map();
+  },
+  watch: {
+    income() {
+      this.key = Object.keys(this.income);
+      this.value = Object.values(this.income);
+      this.Init_map();
+    },
+  },
+};
+</script>
+<style scoped>
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+#main_2 {
+  width: 100%;
+  height: 300px;
+}
+</style>
